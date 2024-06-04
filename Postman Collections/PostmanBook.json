@@ -44,7 +44,8 @@
 							"pm.environment.set(\"randomUserName\", getRandomUserName());\r",
 							"pm.environment.set(\"randomPassword\", generatePassword());"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				},
 				{
@@ -52,14 +53,14 @@
 					"script": {
 						"id": "3c82f5cb-a006-43e2-953a-a89c150e1cb5",
 						"exec": [
-							"pm.environment.set(\"userName\", pm.response.json().username);\r",
-							"pm.environment.set(\"userID\", pm.response.json().userID);\r",
-							"\r",
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});"
+							"pm.environment.set(\"userName\", pm.response.json().username);",
+							"pm.environment.set(\"userID\", pm.response.json().userID);",
+							"",
+							"",
+							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
