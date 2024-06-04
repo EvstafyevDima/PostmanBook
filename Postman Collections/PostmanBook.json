@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "2ed44bcf-3f09-4e91-8f02-429b1d3203b7",
+		"name": "Book Store API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account/v1/User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "166d0a90-91c3-4876-aadd-db7679cb86cc",
+						"exec": [
+							"function generatePassword() {\r",
+							"    const length = 8;\r",
+							"    const lowercase = 'abcdefghijklmnopqrstuvwxyz';\r",
+							"    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';\r",
+							"    const digits = '0123456789';\r",
+							"    const specialCharacters = '!@#$%^&*';\r",
+							"    const allCharacters = lowercase + uppercase + digits + specialCharacters;\r",
+							"\r",
+							"    let password = '';\r",
+							"    password += lowercase[Math.floor(Math.random() * lowercase.length)];\r",
+							"    password += uppercase[Math.floor(Math.random() * uppercase.length)];\r",
+							"    password += digits[Math.floor(Math.random() * digits.length)];\r",
+							"    password += specialCharacters[Math.floor(Math.random() * specialCharacters.length)];\r",
+							"\r",
+							"    for (let i = 4; i < length; i++) {\r",
+							"        password += allCharacters[Math.floor(Math.random() * allCharacters.length)];\r",
+							"    }\r",
+							"\r",
+							"    // Shuffle the password to ensure randomness\r",
+							"    password = password.split('').sort(() => Math.random() - 0.5).join('');\r",
+							"\r",
+							"    return password;\r",
+							"}\r",
+							"\r",
+							"function getRandomUserName() {\r",
+							"    return `user_${Math.floor(Math.random() * 10000)}`;\r",
+							"}\r",
+							"\r",
+							"pm.environment.set(\"randomUserName\", getRandomUserName());\r",
+							"pm.environment.set(\"randomPassword\", generatePassword());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3c82f5cb-a006-43e2-953a-a89c150e1cb5",
+						"exec": [
+							"pm.environment.set(\"userName\", pm.response.json().username);",
+							"pm.environment.set(\"userID\", pm.response.json().userID);",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "4e4681df-9811-4496-9365-7ba47bad3e0c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"{{randomUserName}}\",\r\n  \"password\": \"{{randomPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://demoqa.com/Account/v1/User"
+			},
+			"response": []
+		},
+		{
+			"name": "Account/v1/GenerateToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "80363d0f-addc-4a2a-bc37-f12f0eefa931",
+						"exec": [
+							"var response = pm.response.json();\r",
+							"pm.environment.set(\"token\", pm.response.json().token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверка status\", function () {\r",
+							"    pm.expect(response.status).to.equal(\"Success\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверка result\", function () {\r",
+							"    pm.expect(response.result).to.equal(\"User authorized successfully.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "91eea452-e5d7-42ca-b856-a8308b6c709f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"{{randomUserName}}\",\r\n  \"password\": \"{{randomPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://demoqa.com/Account/v1/GenerateToken"
+			},
+			"response": []
+		},
+		{
+			"name": "Account/v1/Authorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "35cd5277-5e03-4e2f-8643-b92e62c0ddf2",
+						"exec": [
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Проверка ответа на наличие значения true\", function () {\r",
+							"    pm.expect(response).to.equal(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "18766d5a-f98b-47e5-96b9-380ad50e562a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"dima321\",\r\n  \"password\": \"Evstafev$74446\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://demoqa.com/Account/v1/Authorized"
+			},
+			"response": []
+		},
+		{
+			"name": "Account/v1/User/{UUID}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a8d875fa-7b44-4493-b8d4-089670b6403d",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Найден username созданного пользователя \"+ pm.environment.get(\"userName\"), function () {\r",
+							"    pm.expect(jsonData.username).to.equal(pm.environment.get(\"userName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Найден userID созданного пользователя \"+ pm.environment.get(\"userID\"), function () {\r",
+							"    pm.expect(jsonData.userId).to.equal(pm.environment.get(\"userID\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\" массив books пустой  \"+ pm.environment.get(\"userID\"), function () {\r",
+							"    pm.expect(jsonData.books).to.be.empty;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "21aa9f4e-33fa-4424-abec-4fa7cf4d1d71",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://bookstore.demoqa.com/Account/v1/User/{{userID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Account/v1/User/{UUID}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1d997057-d08f-4bd9-872f-221fbeca3fbb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "2a997cf8-45c0-4d72-a33a-c1e7c8ab5a41",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "https://bookstore.demoqa.com/Account/v1/User/{{userID}}"
+			},
+			"response": []
+		}
+	]
+}
