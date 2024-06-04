@@ -57,7 +57,9 @@
 							"pm.environment.set(\"userID\", pm.response.json().userID);",
 							"",
 							"",
-							""
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
