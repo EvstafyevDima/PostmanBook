@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонирование репозитория
+      - uses: actions/checkout@v4
+
+      # Шаг 2: Установка Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'  # Используйте версию Node.js, совместимую с Newman
+
+      # Шаг 3: Установка Newman
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      # Шаг 4: директория для сохранения результатов
+      - name: Make Directory for results
+        run: mkdir -p testResults
+        
+
+      # Шаг 5: Запуск тестов Postman через Newman
+      - name: Run Postman tests
+        run: |
+          newman run ./Postman Collections/PostmanBook.json -r htmlextra
+          
+      # Шаг 6: Выгрузка результатов
+      - name: Output the run Details
+        uses: actions/upload-artfact@v2
+        with:
+          name: RunReports
+          path: testResults
+        
