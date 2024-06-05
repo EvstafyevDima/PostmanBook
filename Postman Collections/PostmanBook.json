@@ -9,9 +9,26 @@
 			"name": "Account/v1/User",
 			"event": [
 				{
+					"listen": "test",
+					"script": {
+						"id": "c65481f0-3a71-4aa6-a2b8-bec5bbc08d45",
+						"exec": [
+							"pm.environment.set(\"userName\", pm.response.json().username);",
+							"pm.environment.set(\"userID\", pm.response.json().userID);",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
 					"listen": "prerequest",
 					"script": {
-						"id": "166d0a90-91c3-4876-aadd-db7679cb86cc",
+						"id": "a16db1e4-f613-4a9c-8b60-64ab1965cd49",
 						"exec": [
 							"function generatePassword() {\r",
 							"    const length = 8;\r",
@@ -43,23 +60,6 @@
 							"\r",
 							"pm.environment.set(\"randomUserName\", getRandomUserName());\r",
 							"pm.environment.set(\"randomPassword\", generatePassword());"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "3c82f5cb-a006-43e2-953a-a89c150e1cb5",
-						"exec": [
-							"pm.environment.set(\"userName\", pm.response.json().username);",
-							"pm.environment.set(\"userID\", pm.response.json().userID);",
-							"",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -157,7 +157,8 @@
 							"    pm.expect(response).to.equal(true);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -176,7 +177,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"userName\": \"dima321\",\r\n  \"password\": \"Evstafev$74446\"\r\n}",
+					"raw": "{\r\n  \"userName\": \"{{randomUserName}}\",\r\n  \"password\": \"{{randomPassword}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
