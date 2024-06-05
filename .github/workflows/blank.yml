@@ -19,14 +19,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Используйте версию Node.js, совместимую с Newman
+          node-version: '20'
 
-      # Шаг 3: Установка Newman
-      - name: Install Newman
-        run: npm install -g newman
+      # Шаг 3: Установка Newman и репортера htmlextra
+      - name: Install Newman and htmlextra Reporter
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
 
-      # Шаг 4: Запуск тестов Postman через Newman
+      # Шаг 4: Запуск тестов Postman через Newman с использованием репортера htmlextra
       - name: Run Postman tests
         run: |
-          newman run ./Postman\ Collections/PostmanBook.json
-          
+          newman run ./Postman\ Collections/PostmanBook.json -r htmlextra --reporter-htmlextra-export ./newman/report.html
+
+      # Шаг 5: Загрузка отчета как артефакта
+      - name: Upload report
+        uses: actions/upload-artifact@v3
+        with:
+          name: postman-test-report
+          path: ./newman/report.html
