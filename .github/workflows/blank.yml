@@ -23,10 +23,7 @@ jobs:
 
       # Шаг 3: Установка Newman
       - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-        
+        run: npm install -g newman
 
       # Шаг 4: Запуск тестов Postman через Newman
       - name: Run Postman tests
