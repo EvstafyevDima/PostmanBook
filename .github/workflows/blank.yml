@@ -28,5 +28,5 @@ jobs:
       # Шаг 4: Запуск тестов Postman через Newman
       - name: Run Postman tests
         run: |
-          newman run ./Postman\ Collections/PostmanBook.json -r htmlextra
+          newman run ./Postman\ Collections/PostmanBook.json
           
