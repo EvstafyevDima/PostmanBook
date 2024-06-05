@@ -17,7 +17,7 @@ jobs:
 
       # Шаг 2: Установка Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -34,7 +34,7 @@ jobs:
 
       # Шаг 5: Загрузка отчета как артефакта
       - name: Upload report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: postman-test-report
           path: ./newman/report.html
